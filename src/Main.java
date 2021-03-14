@@ -1,63 +1,27 @@
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.io.InputStreamReader;
-import java.io.IOException;
-class Main {
+import java.util.List;
 
-    private static ArrayList<Integer> prices = new ArrayList<>();
-    private static int[] foundThem = new int[2];
+class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        System.out.println("------------------------------------------------------");
-        System.out.println("-Enter input:                                        -");
-        fill(br);
-        System.out.println("------------------------------------------------------");
-        System.out.println(prices.toString());
-        System.out.println("-Peter should buy the books with prices " + foundThem[0] + " and " + foundThem[1]+"\n");
-
-
+        br.close();
         bw.close();
     }
 
-    public static void fill(BufferedReader br) throws IOException {
-        int n = Integer.parseInt(br.readLine());
-        String[] unParsedBooks = br.readLine().split("\\s");
-        for (int i = 0; i < n; i++) {
-            prices.add(Integer.parseInt(unParsedBooks[i]));
+    public static int binSearch(ArrayList<Integer> arrayList, int x) {
+        int head = 0;
+        int tail = arrayList.size() - 1;
+        while   ( head <= tail) {
+            int mid = (tail + head) / 2;
+            if (arrayList.get(mid) == x) return mid;
+            else if (x < arrayList.get(mid)) tail = mid - 1;
+            else head = mid + 1;
         }
-        int m = Integer.parseInt(br.readLine());
-        binSearch(m);
-        sort(prices);
-        br.close();
+        return -1;
     }
-
-    public static void binSearch(int m) {
-        ArrayList<Integer> differences = new ArrayList<>();
-        for (int i : prices) {
-            differences.add(m - i);
-        }
-        Collections.reverse(differences);
-    }
-
-    public static void sort(ArrayList<Integer> arraylist) {
-        for (int i = 1; i < arraylist.size(); ++i)
-        {
-            int element = arraylist.get(i);
-            int j = i - 1;
-            while (j >= 0 && arraylist.get(j) > element)
-            {
-                arraylist.set(j + 1, arraylist.get(j));
-                j = j - 1;
-            }
-            arraylist.set(j + 1, element);
-        }
-    }
-
-
 }
