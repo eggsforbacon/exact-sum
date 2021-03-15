@@ -1,24 +1,64 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        arrayList.add(2);
-        arrayList.add(3);
-        arrayList.add(4);
-        arrayList.add(5);
-        arrayList.add(6);
-        int m = 7;
-        for (ArrayList<Integer> ali: findPair(m,arrayList)) {
-            System.out.println(ali.toString());
-        }
-        System.out.println();
+        ArrayList<ArrayList<ArrayList<Integer>>> inputALs = readInput(br);
+        inputALs = sort(inputALs);
+        System.out.println(inputALs.toString());
         br.close();
         bw.close();
+    }
+
+    private static ArrayList<ArrayList<ArrayList<Integer>>> sort(ArrayList<ArrayList<ArrayList<Integer>>> inputALs) {
+        for (ArrayList<ArrayList<Integer>> cases: inputALs) {
+            for (ArrayList<Integer> n_Arr_m: cases) {
+                Collections.sort(n_Arr_m);
+            }
+        }
+        return inputALs;
+    }
+
+    public static ArrayList<ArrayList<ArrayList<Integer>>> readInput(BufferedReader br) throws IOException {
+        StringBuilder input = new StringBuilder();
+        String line = br.readLine();
+        while (line != null) {
+            input.append(line).append("\n");
+            line = br.readLine();
+        }
+        ArrayList<ArrayList<ArrayList<Integer>>> nWeeks = new ArrayList<>();
+        String[] control = input.toString().split("\\n");
+        System.out.println(Arrays.toString(control));
+        int i = 0;
+        String prev = "\n";
+        int week = 0;
+        do {
+            line = control[i];
+            if (i == 0 || prev.equals("\n")) { //N setup
+                nWeeks.add(new ArrayList<>());
+                nWeeks.get(week).add(new ArrayList<>());
+                nWeeks.get(week).get(0).add(Integer.parseInt(line));
+            } else if (prev.length() == 1 && !prev.contains(" ") && !line.isEmpty()) { //Prices setup
+                nWeeks.get(week).add(new ArrayList<>());
+                String[] unParsedBooks = line.split("\\s");
+                for (String book: unParsedBooks) nWeeks.get(week).get(1).add(Integer.parseInt(book));
+            } else if (prev.contains(" ")) { //M setup
+                nWeeks.add(new ArrayList<>());
+                nWeeks.get(week).add(new ArrayList<>());
+                nWeeks.get(week).get(2).add(Integer.parseInt(line));
+            } else { //Empty line
+                week++;
+                line = "\n";
+            }
+            prev = line;
+            i++;
+        } while (i < control.length);
+        return nWeeks;
     }
 
     public static ArrayList<ArrayList<Integer>> findPair(int m, ArrayList<Integer> arrayList) {
