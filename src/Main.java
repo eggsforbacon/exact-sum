@@ -8,7 +8,7 @@ class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         ArrayList<ArrayList<ArrayList<Integer>>> inputALs = readInput(br);
         sort(inputALs);
-        System.out.println(exc(inputALs) + "\n");
+        bw.write(exc(inputALs));
         br.close();
         bw.close();
     }
@@ -23,6 +23,7 @@ class Main {
                 ArrayList<Integer> correctPair = lesser(findPair(m, arrayList, n));
                 msg.append("Peter should buy books whose prices are ").append(correctPair.get(0)).append(" and ").append(correctPair.get(1)).append(".\n\n");
             }
+            msg.deleteCharAt(msg.length() - 1);
         } catch (IndexOutOfBoundsException e) {
             e.fillInStackTrace();
         }
